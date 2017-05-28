@@ -15,6 +15,9 @@ class Workdata:
         print("업체 홈페이지 주소::",self.data["hmpgAddr"])
         print("담당자 이름::", self.data["damdangjaFnm"], " || 담당자 연락처::", self.data["ddjyeonrakcheoNo"])
         print("주소::",self.data["geunmujy"])
-        print("복지::",self.data["bokrihs"])
+        print("급여조건::",self.data["gyjogeonCdNm"]," || 복지::",self.data["bokrihs"])
         print("접수방법::",self.data["jeopsubb"])
         print("=========================================")
+
+    def SortKey(self):
+        return self.data["geunmujysido"]
