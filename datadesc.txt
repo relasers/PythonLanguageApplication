@@ -1,0 +1,30 @@
+"""
+            bokrihs                 = item.find("bokrihs")              # 복리 후생
+            ccdatabalsaengDtm       = item.find("ccdatabalsaengDtm")    # 최초 발생일
+            cjdatabyeongyeongDtm    = item.find("cjdatabyeongyeongDtm") # 최근 변동일
+            cjhakryeok              = item.find("cjhakryeok")           # 학력 조건
+            cygonggoNo              = item.find("cygonggoNo")           # 채용 번호
+            cyjemokNm               = item.find("cyjemokNm")            # 채용 제목
+            damdangjaFnm            = item.find("damdangjaFnm")         # 담당자 이름
+            ddeopmuNm               = item.find("ddeopmuNm")            # 담당 업무
+            ddjyeonrakcheoNo        = item.find("ddjyeonrakcheoNo")     # 담당자 연락처
+            dpyeonrakcheoNo         = item.find("dpyeonrakcheoNo")      # 대표 연락처
+            eopcheNm                = item.find("eopcheNm")             # 업체 이름
+            hmpgAddr                = item.find("hmpgAddr")             # 업체 홈페이지 주소
+            eopjongGbcd             = item.find("eopjongGbcd")          # 업종 구분 코드
+            eopjongGbcdNm           = item.find("eopjongGbcdNm")        # 업종 구분 명
+            geunmujy                = item.find("geunmujy")             # 근무지 주소
+            geunmujysido            = item.find("geunmujysido")         # 근무지 동
+            gmjybjusoCd             = item.find("gmjybjusoCd")          # 근무지 법정동 코드
+            gyeongryeokGbcdNm       = item.find("gyeongryeokGbcdNm")    # 경력 구분
+            gyjogeonCd              = item.find("gyjogeonCd")           # 급여 조건 코드
+            gyjogeonCdNm            = item.find("gyjogeonCdNm")         # 급여 조건 명
+            jeopsubb                = item.find("jeopsubb")             # 접수 방법
+            magamDt                 = item.find("magamDt")              # 마감 일자
+            sschaeyongYn            = item.find("sschaeyongYn")         # 상시 채용 여부
+            yeokjongBrcd            = item.find("yeokjongBrcd")         # 역종 분류 코드
+            yeokjongBrcdNm          = item.find("yeokjongBrcdNm")       # 역종 분류 명
+            yowonGbcd               = item.find("yowonGbcd")            # 요원 구분 코드
+            yowonGbcdNm             = item.find("yowonGbcdNm")          # 요원 구분 명
+            yuhyoYn                 = item.find("yuhyoYn")              # 유효 여부
+"""
