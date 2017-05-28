@@ -35,7 +35,7 @@ def getWorkData():
     req = conn.getresponse()
     print(req.status)
     if int(req.status) == 200:
-        print("Book data downloading complete!")
+        print("Work data downloading complete!")
         return extractWorkData(req.read().decode('utf-8'))
     else:
         print("OpenAPI request has been failed!! please retry")
@@ -48,6 +48,9 @@ def extractWorkData(strXml):
     # 일터 엘리먼트를 가져옵니다.
     itemElements = tree.getiterator("item")  # return list type
     print(itemElements)
+
+
+
 
 def sendMail():
     global host, port
