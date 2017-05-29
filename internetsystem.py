@@ -208,6 +208,7 @@ def getWorkData():
         pickle.dump(worklist, f)
         f.close()
 
+        conn.close()
         return worklist
 #######################################################################################################################
     else:
