@@ -11,6 +11,7 @@ import pickle
 ##global
 conn = None
 regKey = 'uLFxldxGrljnNH%2BO8YO3TNTKnn%2Bb02H6WjbZavryiNNMASW31SXrJuGSTKOyU0PZtnZInjjOWuN8UUA%2BiLs7%2FQ%3D%3D'
+mapKey = 'AIzaSyB224CCz7VW6IdntURnia5g4xL_CuJeLPA'
 
 # 다음 OpenAPI 접속 정보 information
 server = "apis.data.go.kr"

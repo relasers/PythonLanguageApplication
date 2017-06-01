@@ -19,5 +19,14 @@ class Workdata:
         print("접수방법::",self.data["jeopsubb"])
         print("=========================================")
 
-    def SortKey(self):
-        return self.data["geunmujysido"]
+    def Sort_byNum(self):
+        return self.data["cygonggoNo"]
+
+    def Sort_byClass(self):
+        return self.data["eopjongGbcdNm"]
+
+    def Sort_byLocation(self):
+        return self.data["geunmujy"]
+
+    def Sort_byMagamdate(self):
+        return self.data["magamDt"]

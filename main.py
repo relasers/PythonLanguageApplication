@@ -3,6 +3,7 @@ from tkinter import *
 from tkinter import font
 from internetsystem import *
 from operator import eq
+import webbrowser
 
 from datetime import datetime
 
@@ -18,7 +19,18 @@ def Loading():
 def PrintAll():
     global WorksList
 
-    WorksList.sort(key=Workdata.SortKey)
+    RenderText.delete(1.0, END)
+
+    sort_key = sortVariable.get()
+
+    if (sort_key == '1'):
+        WorksList.sort(key=Workdata.Sort_byNum)
+    if (sort_key == '2'):
+        WorksList.sort(key=Workdata.Sort_byLocation)
+    if (sort_key == '3'):
+        WorksList.sort(key=Workdata.Sort_byClass)
+    if (sort_key == '4'):
+        WorksList.sort(key=Workdata.Sort_byMagamdate)
 
     for i in WorksList:
         RenderText.insert(INSERT, "채용번호::")
@@ -103,17 +115,31 @@ def PrintAll():
 def Search():
     global WorksList
 
-    WorksList.sort(key=Workdata.SortKey)
+    sort_key =  sortVariable.get()
+
+    if(sort_key == '1'):
+        WorksList.sort(key=Workdata.Sort_byNum)
+    if (sort_key == '2'):
+        WorksList.sort(key=Workdata.Sort_byLocation)
+    if (sort_key == '3'):
+        WorksList.sort(key=Workdata.Sort_byClass)
+    if (sort_key == '4'):
+        WorksList.sort(key=Workdata.Sort_byMagamdate)
+
+
 
     yowon = yowonVariable.get()
     salary = e_salary_lbox.get(ACTIVE)
     location = e_location.get()
+
+    dataexist = False
 
     RenderText.delete(1.0, END)
 
     for i in WorksList:
         if eq(i.data["yowonGbcd"],yowon) and eq(i.data["gyjogeonCdNm"],salary) and i.data["geunmujy"].find(location) != -1 :
 
+            dataexist = True
 
             RenderText.insert(INSERT, "채용번호::")
             RenderText.insert(INSERT, i.data["cygonggoNo"])
@@ -193,7 +219,9 @@ def Search():
             RenderText.insert(INSERT, "///////////////////////////////////////////////////")
             RenderText.insert(INSERT, "\n")
 
-
+    if dataexist is False:
+        RenderText.insert(INSERT, "조건에 해당하는 일터 없음")
+        RenderText.insert(INSERT, "\n")
 
 
 
@@ -235,7 +263,7 @@ l3 = Label(topFrame, text="근무지")
 l1.grid(row=1, column=0)
 l2.grid(row=2, column=0)
 l3.grid(row=3, column=0)
-
+################################################################################################
 yowonVariable = StringVar()
 yowonVariable.initialize('1')
 e_yowon_1= Radiobutton(topFrame, text="산업기능요원", variable=yowonVariable, value='1')
@@ -259,15 +287,29 @@ e_salary_lbox.insert(8,"2400~2600만원")
 e_salary_lbox.insert(9,"2600~2800만원")
 e_salary_lbox.insert(10,"2800~3000만원")
 e_salary_lbox.insert(11,"3000~3200만원")
-e_salary_lbox.insert(11,"3200~3400만원")
+e_salary_lbox.insert(12,"3200~3400만원")
 
 e_location = Entry(topFrame)
+###################################################################################################
+sortVariable = StringVar()
+sortVariable.initialize('1')
 
+e_sort_number= Radiobutton(topFrame, text="채용번호별 정렬", variable=sortVariable, value='1')
+e_sort_area= Radiobutton(topFrame, text="지역별 정렬", variable=sortVariable, value='2')
+e_sort_upjong = Radiobutton(topFrame, text="업종별 정렬", variable=sortVariable, value='3')
+e_sort_magam = Radiobutton(topFrame, text="마감별 정렬", variable=sortVariable, value='4')
+####################################################################################################################
 e_yowon_1.grid(row = 1, column = 1)
 e_yowon_2.grid(row = 1, column = 2)
 
 e_salary_lbox.grid(row=2,column=1)
 e_location.grid(row=3, column=1)
+
+e_sort_number.grid(row = 4, column = 1)
+e_sort_area.grid(row = 4, column = 2)
+e_sort_upjong.grid(row = 4, column = 3)
+e_sort_magam.grid(row = 4, column = 4)
+#################################################################################################################
 
 RenderTextScrollbar = Scrollbar(RenderFrame)
 RenderTextScrollbar.grid(row=0, column=1)
