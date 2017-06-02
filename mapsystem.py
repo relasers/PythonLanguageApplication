@@ -46,8 +46,6 @@ def get_static_google_map(filename_wo_extension, center=None, zoom=None, imgsize
     url += "maptype=%s&" % maptype  # roadmap, satellite, hybrid, terrain
 
 
-
-    # request += "mobile=false&"  # optional: mobile=true will assume the image is shown on a small screen (mobile device)
     url += "sensor=false&"  # must be given, deals with getting loction from mobile device
     print(url)
 
