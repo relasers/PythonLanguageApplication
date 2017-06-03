@@ -5,8 +5,6 @@ from internetsystem import *
 from operator import eq
 import webbrowser
 
-from datetime import datetime
-
 WorksList = []
 
 def Loading():
