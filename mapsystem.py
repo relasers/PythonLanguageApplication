@@ -19,14 +19,6 @@ mapconn = None
 
 def get_static_google_map(filename_wo_extension, center=None, zoom=None, imgsize="500x500", imgformat="jpeg",
                           maptype="roadmap", markers=None):
-    """retrieve a map (image) from the static google maps server
-
-     See: http://code.google.com/apis/maps/documentation/staticmaps/
-
-        Creates a request string with a URL like this:
-        http://maps.google.com/maps/api/staticmap?center=Brooklyn+Bridge,New+York,NY&zoom=14&size=512x512&maptype=roadmap
-&markers=color:blue|label:S|40.702147,-74.015794&sensor=false"""
-
 
     # assemble the URL
 
