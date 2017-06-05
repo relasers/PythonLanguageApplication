@@ -27,9 +27,7 @@ def get_static_google_map(filename_wo_extension, center=None, zoom=None, imgsize
     # if center and zoom  are not given, the map will show all marker locations
     if center != None:
         url += "center=%s&" % center
-        # request += "center=%s&" % "40.714728, -73.998672"   # latitude and longitude (up to 6-digits)
-        # request += "center=%s&" % "50011" # could also be a zipcode,
-        # request += "center=%s&" % "Brooklyn+Bridge,New+York,NY"  # or a search term
+        
     if center != None:
         url += "zoom=%s&" % zoom  # zoom 0 (all of the world scale ) to 22 (single buildings scale)
 
