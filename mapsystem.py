@@ -27,7 +27,7 @@ def get_static_google_map(filename_wo_extension, center=None, zoom=None, imgsize
     # if center and zoom  are not given, the map will show all marker locations
     if center != None:
         url += "center=%s&" % center
-        
+
     if center != None:
         url += "zoom=%s&" % zoom  # zoom 0 (all of the world scale ) to 22 (single buildings scale)
 
@@ -36,7 +36,7 @@ def get_static_google_map(filename_wo_extension, center=None, zoom=None, imgsize
     url += "maptype=%s&" % maptype  # roadmap, satellite, hybrid, terrain
 
 
-    url += "sensor=false&"  # must be given, deals with getting loction from mobile device
+    url += "sensor=false&"
     print(url)
 
     mapconn.request("GET", url)
