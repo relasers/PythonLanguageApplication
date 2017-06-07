@@ -64,9 +64,7 @@ def get_static_google_map(filename_wo_extension, center=None, zoom=None, imgsize
 marker_list = []
 marker_list.append("markers=color:blue|label:S|11211|11206|11222")  # blue S at several zip code's centers
 marker_list.append("markers=size:tiny|label:B|color:0xFFFF00|40.702147,-74.015794|")  # tiny yellow B at lat/long
-marker_list.append(
-    "markers=size:mid|color:red|label:6|Brooklyn+Bridge,New+York,NY")  # mid-sized red 6 at search location
-# see http://code.google.com/apis/maps/documentation/staticmaps/#Markers
+marker_list.append( "markers=size:mid|color:red|label:6|Brooklyn+Bridge,New+York,NY")
 
 
 # make a map around a center
