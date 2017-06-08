@@ -49,14 +49,11 @@ def get_static_google_map(filename_wo_extension, center=None, zoom=None, imgsize
 
         try:
             PIL_img = Image.open(imgdata)
-            # if this cannot be read as image that, it's probably an error from the server,
         except IOError:
             print("IOError:")
             imgdata.read()
-            # print error (or it may return a image showing the error"
         else:
             PIL_img.show()
-            # PIL_img.save(filename_wo_extension+".jpg", "JPEG") # save as jpeg
 
 
 
