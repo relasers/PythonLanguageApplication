@@ -31,9 +31,9 @@ def get_static_google_map(filename_wo_extension, center=None, zoom=None, imgsize
     if center != None:
         url += "zoom=%s&" % zoom  # zoom 0 (all of the world scale ) to 22 (single buildings scale)
 
-    url += "size=%s&" % (imgsize)  # tuple of ints, up to 640 by 640
+    url += "size=%s&" % (imgsize)
     url += "format=%s&" % imgformat
-    url += "maptype=%s&" % maptype  # roadmap, satellite, hybrid, terrain
+    url += "maptype=%s&" % maptype
 
 
     url += "sensor=false&"
