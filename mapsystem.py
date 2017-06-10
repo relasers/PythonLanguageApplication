@@ -20,17 +20,11 @@ mapconn = None
 def get_static_google_map(filename_wo_extension, center=None, zoom=None, imgsize="500x500", imgformat="jpeg",
                           maptype="roadmap", markers=None):
 
-    # assemble the URL
-
-    url = "http://maps.google.com/maps/api/staticmap?"  # base URL, append query params, separated by &
-
-    # if center and zoom  are not given, the map will show all marker locations
+    url = "http://maps.google.com/maps/api/staticmap?"
     if center != None:
         url += "center=%s&" % center
-
     if center != None:
-        url += "zoom=%s&" % zoom  # zoom 0 (all of the world scale ) to 22 (single buildings scale)
-
+        url += "zoom=%s&" % zoom
     url += "size=%s&" % (imgsize)
     url += "format=%s&" % imgformat
     url += "maptype=%s&" % maptype
