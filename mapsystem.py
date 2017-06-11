@@ -51,13 +51,9 @@ def get_static_google_map(filename_wo_extension, center=None, zoom=None, imgsize
 
 
 
-marker_list = []
-marker_list.append("markers=color:blue|label:S|11211|11206|11222")  # blue S at several zip code's centers
-marker_list.append("markers=size:tiny|label:B|color:0xFFFF00|40.702147,-74.015794|")  # tiny yellow B at lat/long
+marker_list = []g
 marker_list.append( "markers=size:mid|color:red|label:6|Brooklyn+Bridge,New+York,NY")
 
-
-# make a map around a center
 get_static_google_map("google_map_example1", center="(주)한국비전기술", zoom=12, imgsize="500x500",
                       imgformat="jpg", maptype="terrain")
 
