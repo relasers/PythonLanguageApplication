@@ -29,7 +29,6 @@ def get_static_google_map(filename_wo_extension, center=None, zoom=None, imgsize
     url += "format=%s&" % imgformat
     url += "maptype=%s&" % maptype
 
-
     url += "sensor=false&"
     print(url)
 
