@@ -48,9 +48,6 @@ def get_static_google_map(filename_wo_extension, center=None, zoom=None, imgsize
         else:
             PIL_img.show()
 
-
-
-
 marker_list = []g
 marker_list.append( "markers=size:mid|color:red|label:6|Brooklyn+Bridge,New+York,NY")
 
