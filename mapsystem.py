@@ -48,7 +48,7 @@ def get_static_google_map(filename_wo_extension, center=None, zoom=None, imgsize
         else:
             PIL_img.show()
 
-marker_list = []g
+marker_list = []
 marker_list.append( "markers=size:mid|color:red|label:6|Brooklyn+Bridge,New+York,NY")
 
 get_static_google_map("google_map_example1", center="(주)한국비전기술", zoom=12, imgsize="500x500",
