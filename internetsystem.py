@@ -13,11 +13,10 @@ conn = None
 regKey = 'uLFxldxGrljnNH%2BO8YO3TNTKnn%2Bb02H6WjbZavryiNNMASW31SXrJuGSTKOyU0PZtnZInjjOWuN8UUA%2BiLs7%2FQ%3D%3D'
 mapKey = 'AIzaSyB224CCz7VW6IdntURnia5g4xL_CuJeLPA'
 
-# 다음 OpenAPI 접속 정보 information
 server = "apis.data.go.kr"
 
 # smtp 정보
-host = "smtp.gmail.com"  # Gmail SMTP 서버 주소.
+host = "smtp.gmail.com"
 port = "587"
 
 def connectOpenAPIServer():
