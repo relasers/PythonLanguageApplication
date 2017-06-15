@@ -4,9 +4,7 @@ from tkinter import font
 from internetsystem import *
 from operator import eq
 import webbrowser
-
 WorksList = []
-
 def Loading():
     global WorksList
     print("데이터 갱신 중")
