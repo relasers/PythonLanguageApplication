@@ -7,6 +7,8 @@ from internetsystem import *
 from operator import eq
 import webbrowser
 WorksList = []
+BookMarkList = []
+
 def Loading():
     global WorksList
     print("데이터 갱신 중")
@@ -15,135 +17,214 @@ def Loading():
     pass
 
 def PrintAll():
-    global WorksList
+    global WorksList, BookMarkList
 
     RenderNumber.configure(state="normal")
+    RenderBookMark.configure(state="normal")
+
     RenderNumber.delete(0, END)
+    RenderBookMark.delete(0, END)
 
     sort_key = sortVariable.get()
 
     if (sort_key == '1'):
         WorksList.sort(key=Workdata.Sort_byNum)
+        BookMarkList.sort(key=Workdata.Sort_byNum)
     if (sort_key == '2'):
         WorksList.sort(key=Workdata.Sort_byLocation)
+        BookMarkList.sort(key=Workdata.Sort_byLocation)
     if (sort_key == '3'):
         WorksList.sort(key=Workdata.Sort_byClass)
+        BookMarkList.sort(key=Workdata.Sort_byClass)
     if (sort_key == '4'):
         WorksList.sort(key=Workdata.Sort_byMagamdate)
+        BookMarkList.sort(key=Workdata.Sort_byMagamdate)
 
     for i in WorksList:
         RenderNumber.insert(END, i.data["cygonggoNo"])
+
+    for i in BookMarkList:
+        RenderBookMark.insert(END, i.data["cygonggoNo"])
+
+
+def AddBookMark(event):
+    global WorksList, BookMarkList
+
+    RenderBookMark.configure(state="normal")
+
+    try:
+        w = event.widget
+        index = int(w.curselection()[0])
+        value = w.get(index)
+        work = None
+
+        for i in WorksList:
+            if i.data["cygonggoNo"] == value:
+                work = i
+        ## 중복 여부 검사
+        OverlappedData = False
+
+        for i in BookMarkList:
+            if i.data["cygonggoNo"] == value:
+                OverlappedData = True
+
+        if OverlappedData is False:
+            BookMarkList.append(work)
+            RenderBookMark.insert(END, work.data["cygonggoNo"])
+
+
+
+    except Exception:
+        pass
+
+########################################################################################################################
+
+def RemoveBookMark(event):
+    global WorksList, BookMarkList
+
+    RenderBookMark.configure(state="normal")
+
+    try:
+        w = event.widget
+        index = int(w.curselection()[0])
+        value = w.get(index)
+        work = None
+
+        dataidx = 0
+        for i in BookMarkList:
+            if i.data["cygonggoNo"] == value:
+                work = i
+                break
+            dataidx += 1
+
+        BookMarkList.pop(dataidx)
+        RenderBookMark.delete(w.curselection()[0])
+
+
+    except Exception:
+        pass
 
 
 def PrintInfo(event):
     global WorksList
 
-    w = event.widget
-    index = int(w.curselection()[0])
-    value = w.get(index)
-    work = None
-    for i in WorksList:
-        if i.data["cygonggoNo"] == value:
-            work = i
-
-
     RenderText.configure(state="normal")
-    RenderText.delete(1.0, END)
+
+    try:
+        w = event.widget
+        index = int(w.curselection()[0])
+        value = w.get(index)
+        work = None
+
+        for i in WorksList:
+            if i.data["cygonggoNo"] == value:
+                work = i
 
 
-    RenderText.insert(INSERT, "채용번호::")
-    RenderText.insert(INSERT, work.data["cygonggoNo"])
-    RenderText.insert(INSERT, "\n")
+        RenderText.delete(1.0, END)
 
-    RenderText.insert(INSERT, "요원분류::")
-    RenderText.insert(INSERT, work.data["yowonGbcdNm"])
-    RenderText.insert(INSERT, ", 역종분류::")
-    RenderText.insert(INSERT, work.data["yeokjongBrcdNm"])
-    RenderText.insert(INSERT, "\n")
+        RenderText.insert(INSERT, "채용번호::")
+        RenderText.insert(INSERT, work.data["cygonggoNo"])
+        RenderText.insert(INSERT, "\n")
 
-    RenderText.insert(INSERT, "최초발생일::")
-    RenderText.insert(INSERT, work.data["ccdatabalsaengDtm"])
-    RenderText.insert(INSERT, "( 최종변동일::")
-    RenderText.insert(INSERT, work.data["cjdatabyeongyeongDtm"])
-    RenderText.insert(INSERT, " )")
-    RenderText.insert(INSERT, "\n")
+        RenderText.insert(INSERT, "요원분류::")
+        RenderText.insert(INSERT, work.data["yowonGbcdNm"])
+        RenderText.insert(INSERT, ", 역종분류::")
+        RenderText.insert(INSERT, work.data["yeokjongBrcdNm"])
+        RenderText.insert(INSERT, "\n")
 
-    RenderText.insert(INSERT, "마감일::")
-    RenderText.insert(INSERT, work.data["magamDt"])
-    RenderText.insert(INSERT, "\n")
+        RenderText.insert(INSERT, "최초발생일::")
+        RenderText.insert(INSERT, work.data["ccdatabalsaengDtm"])
+        RenderText.insert(INSERT, "( 최종변동일::")
+        RenderText.insert(INSERT, work.data["cjdatabyeongyeongDtm"])
+        RenderText.insert(INSERT, " )")
+        RenderText.insert(INSERT, "\n")
 
-    RenderText.insert(INSERT, "업종::")
-    RenderText.insert(INSERT, work.data["eopjongGbcdNm"])
-    RenderText.insert(INSERT, "\n")
+        RenderText.insert(INSERT, "마감일::")
+        RenderText.insert(INSERT, work.data["magamDt"])
+        RenderText.insert(INSERT, "\n")
 
-    RenderText.insert(INSERT, "경력 구분::")
-    RenderText.insert(INSERT, work.data["gyeongryeokGbcdNm"])
-    RenderText.insert(INSERT, "\n")
+        RenderText.insert(INSERT, "업종::")
+        RenderText.insert(INSERT, work.data["eopjongGbcdNm"])
+        RenderText.insert(INSERT, "\n")
 
-    RenderText.insert(INSERT, "학력 조건::")
-    RenderText.insert(INSERT, work.data["cjhakryeok"])
-    RenderText.insert(INSERT, "\n")
+        RenderText.insert(INSERT, "경력 구분::")
+        RenderText.insert(INSERT, work.data["gyeongryeokGbcdNm"])
+        RenderText.insert(INSERT, "\n")
 
-    RenderText.insert(INSERT, "담당 업무::")
-    RenderText.insert(INSERT, work.data["ddeopmuNm"])
-    RenderText.insert(INSERT, "\n")
+        RenderText.insert(INSERT, "학력 조건::")
+        RenderText.insert(INSERT, work.data["cjhakryeok"])
+        RenderText.insert(INSERT, "\n")
 
-    RenderText.insert(INSERT, "상세 내용::")
-    RenderText.insert(INSERT, work.data["cyjemokNm"])
-    RenderText.insert(INSERT, "\n")
+        RenderText.insert(INSERT, "담당 업무::")
+        RenderText.insert(INSERT, work.data["ddeopmuNm"])
+        RenderText.insert(INSERT, "\n")
 
-    RenderText.insert(INSERT, "업체 이름::")
-    RenderText.insert(INSERT, work.data["eopcheNm"])
-    RenderText.insert(INSERT, "\n")
+        RenderText.insert(INSERT, "상세 내용::")
+        RenderText.insert(INSERT, work.data["cyjemokNm"])
+        RenderText.insert(INSERT, "\n")
 
-    RenderText.insert(INSERT, "대표 연락처::")
-    RenderText.insert(INSERT, work.data["dpyeonrakcheoNo"])
-    RenderText.insert(INSERT, "\n")
+        RenderText.insert(INSERT, "업체 이름::")
+        RenderText.insert(INSERT, work.data["eopcheNm"])
+        RenderText.insert(INSERT, "\n")
 
-    RenderText.insert(INSERT, "업체 홈페이지 주소::")
-    RenderText.insert(INSERT, work.data["hmpgAddr"])
-    RenderText.insert(INSERT, "\n")
+        RenderText.insert(INSERT, "대표 연락처::")
+        RenderText.insert(INSERT, work.data["dpyeonrakcheoNo"])
+        RenderText.insert(INSERT, "\n")
 
-    RenderText.insert(INSERT, "담당자 이름::")
-    RenderText.insert(INSERT, work.data["damdangjaFnm"])
-    RenderText.insert(INSERT, "\n")
+        RenderText.insert(INSERT, "업체 홈페이지 주소::")
+        RenderText.insert(INSERT, work.data["hmpgAddr"])
+        RenderText.insert(INSERT, "\n")
 
-    RenderText.insert(INSERT, "담당자 연락처::")
-    RenderText.insert(INSERT, work.data["ddjyeonrakcheoNo"])
-    RenderText.insert(INSERT, "\n")
+        RenderText.insert(INSERT, "담당자 이름::")
+        RenderText.insert(INSERT, work.data["damdangjaFnm"])
+        RenderText.insert(INSERT, "\n")
 
-    RenderText.insert(INSERT, "주소::")
-    RenderText.insert(INSERT, work.data["geunmujy"])
-    RenderText.insert(INSERT, "\n")
+        RenderText.insert(INSERT, "담당자 연락처::")
+        RenderText.insert(INSERT, work.data["ddjyeonrakcheoNo"])
+        RenderText.insert(INSERT, "\n")
 
-    RenderText.insert(INSERT, "복지::")
-    RenderText.insert(INSERT, work.data["bokrihs"])
-    RenderText.insert(INSERT, "\n")
+        RenderText.insert(INSERT, "주소::")
+        RenderText.insert(INSERT, work.data["geunmujy"])
+        RenderText.insert(INSERT, "\n")
 
-    RenderText.insert(INSERT, "접수방법::")
-    RenderText.insert(INSERT, work.data["jeopsubb"])
-    RenderText.insert(INSERT, "\n")
+        RenderText.insert(INSERT, "복지::")
+        RenderText.insert(INSERT, work.data["bokrihs"])
+        RenderText.insert(INSERT, "\n")
+
+        RenderText.insert(INSERT, "접수방법::")
+        RenderText.insert(INSERT, work.data["jeopsubb"])
+        RenderText.insert(INSERT, "\n")
+
+    except Exception:
+        pass
 
     RenderText.configure(state="disable")
 
 
 
 def Search():
-    global WorksList
+    global WorksList, BookMarkList
 
     RenderNumber.configure(state="normal")
-    RenderNumber.delete(0, END)
+    RenderBookMark.configure(state="normal")
 
+    RenderNumber.delete(0, END)
+    RenderBookMark.delete(0, END)
     sort_key =  sortVariable.get()
 
-    if(sort_key == '1'):
+    if (sort_key == '1'):
         WorksList.sort(key=Workdata.Sort_byNum)
+        BookMarkList.sort(key=Workdata.Sort_byNum)
     if (sort_key == '2'):
         WorksList.sort(key=Workdata.Sort_byLocation)
+        BookMarkList.sort(key=Workdata.Sort_byLocation)
     if (sort_key == '3'):
         WorksList.sort(key=Workdata.Sort_byClass)
+        BookMarkList.sort(key=Workdata.Sort_byClass)
     if (sort_key == '4'):
         WorksList.sort(key=Workdata.Sort_byMagamdate)
+        BookMarkList.sort(key=Workdata.Sort_byMagamdate)
 
 
 
@@ -162,7 +243,8 @@ def Search():
     if dataexist is False:
         RenderNumber.insert(END, "조건에 해당하는 일터 없음")
 
-
+    for i in BookMarkList:
+        RenderBookMark.insert(END, i.data["cygonggoNo"])
 
 
 
@@ -267,6 +349,7 @@ TempFont = font.Font(NumberFrame, size=10, family='Consolas')
 RenderNumber = Listbox(NumberFrame, font=TempFont, height=10, width=42, borderwidth=3, selectmode="EXTENDED")
 RenderNumber.bind('<<ListboxSelect>>', PrintInfo)
 RenderNumber.bind('<<Shift-Up>>', PrintInfo)
+RenderNumber.bind('<Button-3>', AddBookMark)
 Numbervscroll = Scrollbar(NumberFrame, orient=VERTICAL, command=RenderNumber.yview)
 RenderNumber['yscroll'] = Numbervscroll.set
 
@@ -279,6 +362,8 @@ RenderNumber.configure(state="disabled")
 ##################################################################################################
 
 RenderBookMark = Listbox(NumberFrame, font=TempFont, height=10, width=42, borderwidth=3)
+RenderBookMark.bind('<<ListboxSelect>>', PrintInfo)
+RenderBookMark.bind('<Button-3>', RemoveBookMark)
 BookMarkScroll = Scrollbar(NumberFrame, orient=VERTICAL, command=RenderBookMark.yview)
 RenderBookMark['yscroll'] = BookMarkScroll.set
 
@@ -290,10 +375,10 @@ RenderNumber.configure(state="disabled")
 
 ################################################################################################
 
-RenderText = Text(RenderFrame, font=TempFont, wrap=NONE, height=20, width=80, borderwidth=3)
+RenderText = Text(RenderFrame, font=TempFont, wrap=NONE, height=20, width=90, borderwidth=3)
 RenderText.pack(side="left", fill="both", expand=True)
 
-RenderFrame.place(x=0, y=360)
+RenderFrame.place(x=0, y=340)
 RenderText.configure(state="disabled")
 
 
