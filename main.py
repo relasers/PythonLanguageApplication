@@ -5,19 +5,48 @@ from tkinter import messagebox
 
 from internetsystem import *
 from operator import eq
+import pickle
+from mapsystem import *
+
+
+from PIL import Image, ImageTk
+
 import webbrowser
 WorksList = []
 BookMarkList = []
+BookMarkIdx = []
+
+image = None
+
 
 def Loading():
-    global WorksList
+    global WorksList,BookMarkList, BookMarkIdx
     print("데이터 갱신 중")
     WorksList = getWorkData()
+
+    bookidx = []
+    bookidx = pickle.load(open("bookmark.txt", "rb"))
+
+    BookMarkList = []
+
+    for i in WorksList:
+        for j in bookidx:
+            if i.data["cygonggoNo"] == j:
+                BookMarkIdx.append(j)
+                continue
+
+    for i in BookMarkIdx:
+        for j in WorksList:
+            if i == j.data["cygonggoNo"]:
+                BookMarkList.append(j)
+                continue
+
+    PrintAll()
     print("데이터 갱신 완료")
     pass
 
 def PrintAll():
-    global WorksList, BookMarkList
+    global WorksList, BookMarkList, BookMarkIdx
 
     RenderNumber.configure(state="normal")
     RenderBookMark.configure(state="normal")
@@ -48,7 +77,7 @@ def PrintAll():
 
 
 def AddBookMark(event):
-    global WorksList, BookMarkList
+    global WorksList, BookMarkList, BookMarkIdx
 
     RenderBookMark.configure(state="normal")
 
@@ -70,8 +99,12 @@ def AddBookMark(event):
 
         if OverlappedData is False:
             BookMarkList.append(work)
+            BookMarkIdx.append(work.data["cygonggoNo"])
             RenderBookMark.insert(END, work.data["cygonggoNo"])
 
+        f = open("bookmark.txt", 'wb')
+        pickle.dump(BookMarkIdx, f)
+        f.close()
 
 
     except Exception:
@@ -80,7 +113,7 @@ def AddBookMark(event):
 ########################################################################################################################
 
 def RemoveBookMark(event):
-    global WorksList, BookMarkList
+    global WorksList, BookMarkList, BookMarkIdx
 
     RenderBookMark.configure(state="normal")
 
@@ -98,15 +131,19 @@ def RemoveBookMark(event):
             dataidx += 1
 
         BookMarkList.pop(dataidx)
+        BookMarkIdx.pop(dataidx)
         RenderBookMark.delete(w.curselection()[0])
 
+        f = open("bookmark.txt", 'wb')
+        pickle.dump(BookMarkIdx, f)
+        f.close()
 
     except Exception:
         pass
 
 
 def PrintInfo(event):
-    global WorksList
+    global WorksList, image
 
     RenderText.configure(state="normal")
 
@@ -196,11 +233,71 @@ def PrintInfo(event):
         RenderText.insert(INSERT, work.data["jeopsubb"])
         RenderText.insert(INSERT, "\n")
 
+        markerstr = "markers=size:large|color:red|label:0|"
+        markerstr += work.data["eopcheNm"]
+
+        marker_list = []
+        marker_list.append(markerstr)
+
+        GetGoogleMap("parsedmap", center=work.data["eopcheNm"], zoom=12, imgsize="360x440",
+                     imgformat="gif", maptype="roadmap", markers=marker_list)
+
+        image = PhotoImage(file='parsedmap.gif')
+        image_label.configure(image=image)
+
+
     except Exception:
         pass
 
+
+
     RenderText.configure(state="disable")
 
+###########################################################################################################################
+
+def sendMail():
+    global host, port
+    html = ""
+    title = "Alternative Milirary Service"
+    senderAddr = str(input('sender email address :'))
+    recipientAddr = str(input('recipient email address :'))
+    msgtext = str(input('write message :'))
+    passwd = str(input(' input your password of gmail account :'))
+
+    import smtplib
+    # MIMEMultipart의 MIME을 생성합니다.
+    from email.mime.multipart import MIMEMultipart
+    from email.mime.text import MIMEText
+
+    # Message container를 생성합니다.
+    msg = MIMEMultipart('alternative')
+
+    # set message
+    msg['Subject'] = title
+    msg['From'] = senderAddr
+    msg['To'] = recipientAddr
+
+    msgPart = MIMEText(msgtext, 'plain')
+    bookPart = MIMEText(html, 'html', _charset='UTF-8')
+
+    # 메세지에 생성한 MIME 문서를 첨부합니다.
+    msg.attach(msgPart)
+    msg.attach(bookPart)
+
+    print("connect smtp server ... ")
+    s = smtplib.SMTP(host, port)
+    # s.set_debuglevel(1)
+    s.ehlo()
+    s.starttls()
+    s.ehlo()
+    s.login(senderAddr, passwd)  # 로그인을 합니다.
+    s.sendmail(senderAddr, [recipientAddr], msg.as_string())
+    s.close()
+
+    print("Mail sending complete!!!")
+
+
+###############################################################################################################################
 
 
 def Search():
@@ -256,10 +353,9 @@ def Search():
 
 
 
-Loading()
-#########################################################################################################################
+
 root = Tk()
-root.geometry('640x720+400+400')
+root.geometry('640x900+400+400')
 theLabel = Label(root, text= "Alternative Military Service")
 theLabel.pack()
 
@@ -279,13 +375,15 @@ buttonFrame.pack()
 RefreshButton = Button(buttonFrame, text="갱신", fg="red",command=Loading)
 SearchButton = Button(buttonFrame, text = "검색", fg="red",command=Search)
 PrintButton = Button(buttonFrame, text = "전체출력", fg="red",command=PrintAll)
+MailButton = Button(buttonFrame, text = "메일전송", fg="red",command=sendMail)
 QuitButton = Button(buttonFrame, text = "종료", fg="red",command=exit)
 #ailButton = Button(topFrame, text="메일", fg="red",command=sendMail)
 
 RefreshButton.grid(row=0, column=0)
 SearchButton.grid(row=0, column=1)
 PrintButton.grid(row=0, column=2)
-QuitButton.grid(row=0, column=3)
+MailButton.grid(row=0, column=3)
+QuitButton.grid(row=0, column=4)
 
 #MailButton.grid(row=3, column=1, columnspan=2)
 
@@ -375,13 +473,25 @@ RenderNumber.configure(state="disabled")
 
 ################################################################################################
 
-RenderText = Text(RenderFrame, font=TempFont, wrap=NONE, height=20, width=90, borderwidth=3)
+
+
+
+RenderText = Text(RenderFrame, font=TempFont, wrap=NONE, height=30, width=42, borderwidth=3)
+RenderTextScrollbar = Scrollbar(RenderFrame, orient=VERTICAL, command=RenderText.yview)
+RenderText['yscroll'] = RenderTextScrollbar.set
+
 RenderText.pack(side="left", fill="both", expand=True)
+RenderTextScrollbar.pack(side="left", fill=BOTH)
+
 
 RenderFrame.place(x=0, y=340)
 RenderText.configure(state="disabled")
 
 
+image = PhotoImage(file = 'AMS.png')
+image_label = Label(RenderFrame,image=image)
+image_label.pack(side="left", fill="both", expand=True)
+Loading()
 #####################################################################################################################
 root.mainloop()
 

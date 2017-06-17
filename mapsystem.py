@@ -1,5 +1,9 @@
+# -*- coding: utf-8 -*-
 
+import urllib
+import spam
 from urllib import request
+from urllib.parse import urlencode, quote_plus
 from urllib import parse
 from urllib import response
 
@@ -15,12 +19,30 @@ try:
 except ImportError:
     from io import StringIO
 
+"""
+
+https://maps.googleapis.com/maps/api/staticmap?center=Brooklyn+Bridge,New+York,NY&zoom=13&size=600x300&maptype=roadmap
+&markers=color:blue%7Clabel:S%7C40.702147,-74.015794&markers=color:green%7Clabel:G%7C40.711614,-74.012318
+&markers=color:red%7Clabel:C%7C40.718217,-73.998284
+&key=AIzaSyB224CCz7VW6IdntURnia5g4xL_CuJeLPA
+
+"""
+key = "AIzaSyB224CCz7VW6IdntURnia5g4xL_CuJeLPA"
+
+server = "maps.google.com"
 mapconn = None
 
-def get_static_google_map(filename_wo_extension, center=None, zoom=None, imgsize="500x500", imgformat="jpeg",
-                          maptype="roadmap", markers=None):
+def connectOpenAPIServer():
+    global mapconn, server
+    mapconn = HTTPConnection(server)
 
-    url = "http://maps.google.com/maps/api/staticmap?"
+def GetGoogleMap(filename_wo_extension, center=None, zoom=None, imgsize="500x500", imgformat="jpeg",
+                          maptype="roadmap", markers=None):
+    global server
+    if mapconn == None:
+        connectOpenAPIServer()
+
+    url = u"http://maps.google.com/maps/api/staticmap?"
     if center != None:
         url += "center=%s&" % center
     if center != None:
@@ -30,27 +52,34 @@ def get_static_google_map(filename_wo_extension, center=None, zoom=None, imgsize
     url += "maptype=%s&" % maptype
 
     url += "sensor=false&"
-    print(url)
 
-    mapconn.request("GET", url)
+    if markers != None:
+        for marker in markers:
+            url += "%s&" % marker
+
+    url += "key=%s" % key
+
+    print(   urllib.request.quote(url.encode("utf-8"), '?=+,&/:' )  )
+
+    urllib.request.quote(url.encode("utf-8"), '/:' )
+
+    mapconn.request("GET",  urllib.request.quote(url.encode("utf-8"), '?=+,&/:' )   )
 
     req = mapconn.getresponse()
 
     print(req.status)
     if int(req.status) == 200:
-        imgdata = StringIO(req.read())
+        urllib.request.urlretrieve(   urllib.request.quote(url.encode("utf-8"), '?=+,&/:' )     , filename_wo_extension + "." + imgformat)
 
-        try:
-            PIL_img = Image.open(imgdata)
-        except IOError:
-            print("IOError:")
-            imgdata.read()
-        else:
-            PIL_img.show()
+    mapconn.close()
 
+
+"""
 marker_list = []
-marker_list.append( "markers=size:mid|color:red|label:6|Brooklyn+Bridge,New+York,NY")
+marker_list.append( "markers=size:large|color:red|label:1|(주)한국비전기술")
 
-get_static_google_map("google_map_example1", center="(주)한국비전기술", zoom=12, imgsize="500x500",
-                      imgformat="jpg", maptype="terrain")
+get_static_google_map("parsedmap", center="(주)한국비전기술", zoom=12, imgsize="360x440",
+                      imgformat="gif", maptype="roadmap", markers= marker_list )
+
+"""
 
