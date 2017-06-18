@@ -261,7 +261,7 @@ def sendMail():
     title = "Alternative Milirary Service"
     senderAddr = str(input('sender email address :'))
     recipientAddr = str(input('recipient email address :'))
-    msgtext = str(input('write message :'))
+    msgtext = ""
     passwd = str(input(' input your password of gmail account :'))
 
     import smtplib
@@ -276,6 +276,13 @@ def sendMail():
     msg['Subject'] = title
     msg['From'] = senderAddr
     msg['To'] = recipientAddr
+
+
+    for i in BookMarkIdx:
+        for j in WorksList:
+            if i == j.data["cygonggoNo"]:
+                msgtext += j.Info()
+                continue
 
     msgPart = MIMEText(msgtext, 'plain')
     bookPart = MIMEText(html, 'html', _charset='UTF-8')
