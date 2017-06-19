@@ -259,10 +259,10 @@ def sendMail():
     global host, port
     html = ""
     title = "Alternative Milirary Service"
-    senderAddr = str(input('sender email address :'))
-    recipientAddr = str(input('recipient email address :'))
+    senderAddr = "pythontemp@gmail.com"
+    recipientAddr = e_mail.get()
     msgtext = ""
-    passwd = str(input(' input your password of gmail account :'))
+    passwd = "!python17965"
 
     import smtplib
     # MIMEMultipart의 MIME을 생성합니다.
@@ -397,9 +397,13 @@ QuitButton.grid(row=0, column=4)
 l1 = Label(topFrame, text="요원구분")
 l2 = Label(topFrame, text="급여조건")
 l3 = Label(topFrame, text="근무지")
+l4 = Label(topFrame, text="정렬기준")
+l5 = Label(topFrame, text="메일주소")
 l1.grid(row=1, column=0)
 l2.grid(row=2, column=0)
 l3.grid(row=3, column=0)
+l4.grid(row=4, column=0)
+l5.grid(row=5, column=0)
 ################################################################################################
 yowonVariable = StringVar()
 yowonVariable.initialize('1')
@@ -427,6 +431,7 @@ e_salary_lbox.insert(11,"3000~3200만원")
 e_salary_lbox.insert(12,"3200~3400만원")
 
 e_location = Entry(topFrame)
+e_mail = Entry(topFrame)
 ###################################################################################################
 sortVariable = StringVar()
 sortVariable.initialize('1')
@@ -442,10 +447,12 @@ e_yowon_2.grid(row = 1, column = 2)
 e_salary_lbox.grid(row=2,column=1)
 e_location.grid(row=3, column=1)
 
+
 e_sort_number.grid(row = 4, column = 1)
 e_sort_area.grid(row = 4, column = 2)
 e_sort_upjong.grid(row = 4, column = 3)
 e_sort_magam.grid(row = 4, column = 4)
+e_mail.grid(row=5,column=1)
 #################################################################################################################
 
 TempFont = font.Font(NumberFrame, size=10, family='Consolas')
