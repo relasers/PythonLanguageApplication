@@ -8,6 +8,11 @@ from operator import eq
 import pickle
 from mapsystem import *
 
+import mimetypes
+import smtplib
+from email.mime.base import MIMEBase
+from email.mime.text import MIMEText
+
 
 from PIL import Image, ImageTk
 
@@ -256,27 +261,14 @@ def PrintInfo(event):
 ###########################################################################################################################
 
 def sendMail():
-    global host, port
+    global host, port, WorksList, BookMarkList, BookMarkIdx
     html = ""
     title = "Alternative Milirary Service"
     senderAddr = "pythontemp@gmail.com"
     recipientAddr = e_mail.get()
-    msgtext = ""
     passwd = "!python17965"
 
-    import smtplib
-    # MIMEMultipart의 MIME을 생성합니다.
-    from email.mime.multipart import MIMEMultipart
-    from email.mime.text import MIMEText
-
-    # Message container를 생성합니다.
-    msg = MIMEMultipart('alternative')
-
-    # set message
-    msg['Subject'] = title
-    msg['From'] = senderAddr
-    msg['To'] = recipientAddr
-
+    msgtext = ""
 
     for i in BookMarkIdx:
         for j in WorksList:
@@ -284,12 +276,17 @@ def sendMail():
                 msgtext += j.Info()
                 continue
 
-    msgPart = MIMEText(msgtext, 'plain')
-    bookPart = MIMEText(html, 'html', _charset='UTF-8')
+    msg = MIMEBase("multipart", "alternative")
+    msg['Subject'] = title
+    msg['From'] = senderAddr
+    msg['To'] = recipientAddr
 
-    # 메세지에 생성한 MIME 문서를 첨부합니다.
-    msg.attach(msgPart)
-    msg.attach(bookPart)
+    # MIME 문서를 생성합니다.
+    HtmlPart = MIMEText(msgtext, 'plain', _charset='UTF-8')
+
+    # 만들었던 mime을 MIMEBase에 첨부 시킨다.
+    msg.attach(HtmlPart)
+
 
     print("connect smtp server ... ")
     s = smtplib.SMTP(host, port)
@@ -468,7 +465,7 @@ RenderNumber['yscroll'] = Numbervscroll.set
 Numbervscroll.pack(side="left", fill="y")
 RenderNumber.pack(side="left", fill="both", expand=True)
 
-NumberFrame.place(x=0, y=170)
+NumberFrame.place(x=0, y=190)
 RenderNumber.configure(state="disabled")
 
 ##################################################################################################
@@ -498,7 +495,7 @@ RenderText.pack(side="left", fill="both", expand=True)
 RenderTextScrollbar.pack(side="left", fill=BOTH)
 
 
-RenderFrame.place(x=0, y=340)
+RenderFrame.place(x=0, y=360)
 RenderText.configure(state="disabled")
 
 
